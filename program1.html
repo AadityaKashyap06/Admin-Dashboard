@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: all 0.3s ease;
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            margin-top: 40px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        li:hover {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #d32f2f;
+        } */
+</style>
+<body>
+   <form action="" id="ss">
+    <label for="">Selling Price:</label>
+       <input type="number" id="ss1"> 
+    <label for="">Product Name:</label>
+       <input type="text" id="ss2">
+        <select name="" id="ss3">
+            <option value="Electronic_Item">Electronic Item</option>
+            <option value="Food_Items">Food Items</option>
+            <option value="Skincare_Items">Skincare Items</option>
+        </select>
+       <input type="submit" value="Add products">
+
+   </form>
+   <h1>Food Items</h1>
+   <ul id="kk1"> 
+            
+   </ul>
+   <h1>Electronic Item</h1>
+       <ul id="kk2">
+       
+       </ul>
+       <h1> Skincare Items</h1>
+       <ul id="kk3">
+       
+       </ul>
+</body>
+</html>
+<script>
+    let list1=document.getElementById("kk1");
+    let list2=document.getElementById("kk2");
+    let list3=document.getElementById("kk3");
+     let arr=localStorage.getItem("ii");
+     if(arr==null){
+        arr=[]
+     }else{
+        arr=JSON.parse(arr);
+     }
+       let form=document.getElementById("ss");
+       let price=document.getElementById("ss1");
+       let name=document.getElementById("ss2");
+       let type=document.getElementById("ss3");
+        console.log(type.value)
+       form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+          let obj={
+            Price:price.value,
+            name:name.value,
+            type:type.value
+          };
+          if(!(arr.some(x=>x.name===obj.name))){
+            arr.push(obj);
+          }else{
+            alert(`Already Added`)
+          }
+          localStorage.setItem("ii",JSON.stringify(arr));
+          let ll=type.value;
+           if(ll=="Electronic_Item"){
+            Electronic_Item(arr);
+           }else if(ll=="Food_Items"){
+            Food_Items(arr)
+           }else{
+            Skincare_Items(arr)
+           }
+         
+       });
+       function Food_Items(arr){
+          list1 .innerHTML=null;
+          for(let i=0;i<arr.length;i++){
+            if(arr[i].type=="Food_Items"){
+                let list=document.createElement("li")
+            list.innerHTML=`${arr[i].type}  ${arr[i].name}  ${arr[i].Price}  <button onclick="deleteItem(${i}, 'Food_Items')">Delete</button>  
+                <br>`;
+                list1.appendChild(list);
+            }
+          }
+             
+         }
+        //  function Electronic_Item(arr){
+        //     list2 .innerHTML=null;
+        //   for(let i=0;i<arr.length;i++){
+        //     if(arr[i].type=="Electronic_Item"){
+        //         let list=document.createElement("li")
+        //     list.innerHTML=`${arr[i].type}  ${arr[i].name}  ${arr[i].Price}  <button class="tt" onclick="deleteItem(${i}, 'Food_Items')">Delete</button> 
+        //         <br>`;
+               
+        //         list2.appendChild(list);
+        //     }
+             
+        //  }
+        // }
+        //  function Skincare_Items(arr){
+        //     list3 .innerHTML=null;
+        //   for(let i=0;i<arr.length;i++){
+        //     if(arr[i].type=="Skincare_Items"){
+        //         let list=document.createElement("li")
+        //     list.innerHTML=`${arr[i].type}  ${arr[i].name}  ${arr[i].Price}  <button  onclick="deleteItem(${i}, 'Food_Items')">Delete</button>
+        //         <br>`;
+        //         list3.appendChild(list);
+        //     }
+             
+        //  }
+        // }
+        function Skincare_Items(arr){
+    list3.innerHTML = null;
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i].type === "Skincare_Items"){
+            let list = document.createElement("li");
+            list.innerHTML = `${arr[i].type} ${arr[i].name} ${arr[i].Price} <button onclick="deleteItem(${i}, 'Skincare_Items')">Delete</button> 
+            <br>`;
+            list3.appendChild(list);
+        }
+    }
+}
+        function Electronic_Item(arr){
+    list2.innerHTML = null;
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i].type === "Electronic_Item"){
+            let list = document.createElement("li");
+            list.innerHTML = `${arr[i].type} ${arr[i].name} ${arr[i].Price} <button class="tt" onclick="deleteItem(${i}, 'Electronic_Item')">Delete</button> 
+            <br>`;
+            list2.appendChild(list);
+        }
+    }
+}
+        function deleteItem(index, type){
+          arr = arr.filter((item, i) => i !== index || item.type !== type);
+          localStorage.setItem("ii", JSON.stringify(arr));
+          if(type === "Electronic_Item"){
+            Electronic_Item(arr);
+          } else if(type === "Food_Items"){
+            Food_Items(arr);
+          } else {
+            Skincare_Items(arr);
+          }
+       }
+      
+</script>
