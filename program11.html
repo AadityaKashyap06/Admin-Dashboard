@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+   form {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.5s ease;
+    }
+
+    label {
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    input[type="submit"] {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.5s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.5s ease;
+    }
+
+    li:hover {
+        background-color: #f5f5f5;
+    }
+
+    button {
+        padding: 5px;
+        background-color: #f44336;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.5s ease;
+    }
+
+    button:hover {
+        background-color: #da190b;
+    }
+</style>
+<body>
+    <form action="" id="ss">
+        <label for="">Selling Price:</label>
+           <input type="number" id="ss1"> 
+        <label for="">Product Name:</label>
+           <input type="text" id="ss2">
+            <select name="" id="ss3">
+                <option value="Electronic_Item">Electronic Item</option>
+                <option value="Food_Items">Food Items</option>
+                <option value="Skincare_Items">Skincare Items</option>
+            </select>
+           <input type="submit" value="Add products">
+    
+       </form>
+       <h1>Food Items</h1>
+       <ul id="kk1"> 
+    
+       </ul>
+       <h1>Electronic Item</h1>
+           <ul id="kk2">
+    
+           </ul>
+           <h1> Skincare Items</h1>
+           <ul id="kk3">
+    
+           </ul>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+<script>
+    let form=document.getElementById("ss");
+    let price=document.getElementById("ss1");
+    let name=document.getElementById("ss2");
+    let type=document.getElementById("ss3");
+    let list1=document.getElementById("kk1");
+    let list2=document.getElementById("kk2");
+    let list3=document.getElementById("kk3");
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let obj={
+            price:price.value,
+            name:name.value,
+            type:type.value
+        };
+        let oo=axios.get(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list`).then((z)=>{
+            let a=z.data;
+            if(!(a.some (s=> (s.name).toUpperCase()===(obj.name).toUpperCase()))){
+                axios.post(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list`,obj).then((x)=>{
+        let p=axios.get(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list`).then((x)=>{
+            if(obj.type=="Electronic_Item"){
+                Ec(x.data);
+            }else if(obj.type=="Food_Items"){
+     Fc(x.data);
+            }else{
+      Si(x.data);
+            }
+        })
+       
+       }).catch((w)=>{
+        console.log(err);
+       })
+            }else{
+                alert(`already there`)
+            }
+        })
+       
+    });
+    function Ec(arr){
+       list2.innerHTML=null;
+       for(let i=0;i<arr.length;i++){
+      if(arr[i].type=="Electronic_Item"){
+        let list=document.createElement("li");
+        list.innerHTML=`${arr[i].name}-${arr[i].type}-${arr[i].price}-<button onclick="tt(event,'${arr[i]._id}','${arr[i].type}')">Delete</button>-<button onclick="ee(event,'${arr[i]._id}','${arr[i].name}','${arr[i].type}','${arr[i].price}')">Edit</button>`;
+    list2.appendChild(list);
+      }
+       }
+    }
+    function Fc(arr){
+       list1.innerHTML=null;
+       for(let i=0;i<arr.length;i++){
+           if(arr[i].type=="Food_Items"){
+            let list=document.createElement("li");
+        list.innerHTML=`${arr[i].name}-${arr[i].type}-${arr[i].price}-<button onclick="tt(event,'${arr[i]._id}','${arr[i].type}')">Delete</button>-<button onclick="ee(event,'${arr[i]._id}','${arr[i].name}','${arr[i].type}','${arr[i].price}')">Edit</button>`;
+    list1.appendChild(list);
+           }
+       }
+    }
+    function Si(arr){
+        list3.innerHTML=null;
+       for(let i=0;i<arr.length;i++){
+           if(arr[i].type=="Skincare_Items"){
+            let list=document.createElement("li");
+        list.innerHTML=`${arr[i].name}-${arr[i].type}-${arr[i].price}-<button onclick="tt(event,'${arr[i]._id}','${arr[i].type}')">Delete</button>-<button onclick="ee(event,'${arr[i]._id}','${arr[i].name}','${arr[i].type}','${arr[i].price}')">Edit</button>`;
+    list3.appendChild(list);
+           }
+       }
+    }
+    function ref(s){
+        let data=axios.get(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list`).then((x)=>{
+            if(s=="Electronic_Item"){
+             Ec(x.data);
+}else if(s=="Food_Items"){
+    Fc(x.data);
+}else{
+         Si(x.data);
+}
+        }).catch((err)=>{
+            console.log(err);
+        })
+       
+    }
+    function tt(e,i,y){
+     axios.delete(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list/${i}`).then((x)=>{
+               ref(y);
+     }).catch((err)=>{
+        console.log(err);
+     })
+    };
+     function ee(e, id, currentName, currentType, currentPrice){
+        let newName = prompt("Enter new product name:", currentName);
+    let newPrice = prompt("Enter new product price:", currentPrice);
+    let newType = prompt("Enter new product type:", currentType);
+
+    // Send a PUT request to update the product information
+    axios.put(`https://crudcrud.com/api/d803c33e9afc40bca7b67f8b9d75e7c8/list/${id}`, {
+        name: newName,
+        price: newPrice,
+        type: newType
+    }).then((response) => {
+        // Refresh the corresponding list based on the updated product type
+        ref(currentType);
+    }).catch((error) => {
+        console.log(error);
+    });
+     };
+     
+</script>
